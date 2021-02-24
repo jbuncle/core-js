@@ -6,17 +6,17 @@ import { accessSync, constants, existsSync } from "fs";
 export class AssertionError extends Error {
 }
 
-export const assertFileExists = (filepath: string): void => {
-    if (!existsSync(filepath)) {
-        throw new AssertionError(`Path '${filepath}' doesn't exist.`);
+export const assertPathExists = (path: string): void => {
+    if (!existsSync(path)) {
+        throw new AssertionError(`Path '${path}' doesn't exist.`);
     }
 }
 
-export const assertFileWriteable = (filepath: string): void => {
+export const assertPathWriteable = (path: string): void => {
     try {
-        accessSync(filepath, constants.W_OK);
+        accessSync(path, constants.W_OK);
     } catch (e: unknown) {
-        throw new Error(`Can't write to path '${filepath}'`);
+        throw new Error(`Can't write to path '${path}'`);
     }
 }
 
