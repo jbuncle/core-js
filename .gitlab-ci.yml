@@ -7,20 +7,22 @@ cache:
   paths:
     - node_modules/
 
-image: cyberpearuk/node-build-docker
+image: jbuncle/node-build-docker
 
 build-and-tag:
     stage: build
     script:
+        - npm config set strict-ssl false
         - npm install
         - npm run build
-        - git-tag
+        - gitlab-tag
     only:
         - master
 
 pack:
     stage: build
     script:
+        - npm config set strict-ssl false
         - npm install
         - npm run build
         - npm pack
@@ -35,6 +37,7 @@ publish:
     script:
         - RELEASE="$(ls *.tgz | tail -n 1)"
         - echo $RELEASE
+        - npm config set strict-ssl false
         - npm publish $RELEASE --registry https://nexus.jbuncle.co.uk/repository/npm-private/
     only:
         - tags
