@@ -11,8 +11,10 @@ image: jbuncle/node-build-docker
 
 build-and-tag:
     stage: build
-    script:
+    before_script:
         - npm config set strict-ssl false
+        - npm config set registry https://nexus.jbuncle.co.uk/repository/npm-private/
+    script:
         - npm install
         - npm run build
         - gitlab-tag
@@ -21,8 +23,10 @@ build-and-tag:
 
 pack:
     stage: build
-    script:
+    before_script:
         - npm config set strict-ssl false
+        - npm config set registry https://nexus.jbuncle.co.uk/repository/npm-private/
+    script:
         - npm install
         - npm run build
         - npm pack
@@ -34,11 +38,13 @@ pack:
 
 publish:
     stage: deploy
+    before_script:
+        - npm config set strict-ssl false
+        - npm config set registry https://nexus.jbuncle.co.uk/repository/npm-private/
     script:
         - RELEASE="$(ls *.tgz | tail -n 1)"
         - echo $RELEASE
-        - npm config set strict-ssl false
-        - npm publish $RELEASE --registry https://nexus.jbuncle.co.uk/repository/npm-private/
+        - npm publish $RELEASE
     only:
         - tags
     dependencies: 
