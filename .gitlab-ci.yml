@@ -8,11 +8,11 @@ cache:
     - node_modules/
 
 image: jbuncle/node-build-docker
+before_script:
+    - npm config set strict-ssl false
 
 build-and-tag:
     stage: build
-    before_script:
-        - npm config set strict-ssl false
     script:
         - npm install
         - npm run build
@@ -22,8 +22,6 @@ build-and-tag:
 
 pack:
     stage: build
-    before_script:
-        - npm config set strict-ssl false
     script:
         - npm install
         - npm run build
@@ -36,8 +34,6 @@ pack:
 
 publish:
     stage: deploy
-    before_script:
-        - npm config set strict-ssl false
     script:
         - RELEASE="$(ls *.tgz | tail -n 1)"
         - echo $RELEASE
